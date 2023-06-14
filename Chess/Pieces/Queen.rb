@@ -1,14 +1,17 @@
-class Queen
+require_relative './Piece.rb'
+require_relative './Slideable.rb'
+
+class Queen < 
     include Slideable
 # @pos
 # @board
     def symbol
-        symbol="\u265B"
+       '♕'
     end
 
     private
     def move_dirs
-        horizontal_dirs + diagonal_dirs
+        HORIZONTAL_DIRS + DIAGONAL_DIRS
         # H_DIRS + D_DIRS
     end
 

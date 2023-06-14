@@ -2,6 +2,7 @@
 require_relative './Pieces/Piece.rb'
 require_relative './Pieces/null_piece.rb'
 require_relative './Pieces/Bishop.rb'
+require_relative './Pieces/Pawn.rb'
 
 class Board
   attr_reader :grid, :null_piece
@@ -34,11 +35,11 @@ class Board
 
   def populate
     [0,1].each do |i|
-      grid[i] = grid[i].map.with_index { |_, j| Bishop.new([i,j], :white, self) }
+      grid[i] = grid[i].map.with_index { |_, j| Pawn.new([i,j], :black, self) }
     end
 
     [6,7].each do |i|
-      grid[i] = grid[i].map.with_index { |_, j| Bishop.new([i,j], :black, self) }
+      grid[i] = grid[i].map.with_index { |_, j| Pawn.new([i,j], :white, self) }
     end
   end
 
