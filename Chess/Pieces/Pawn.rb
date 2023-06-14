@@ -2,7 +2,7 @@ require_relative './Piece.rb'
 
 class Pawn < Piece
     def moves
-     forward_steps
+     forward_steps + side_attacks
     end
     
     def symbol
@@ -43,7 +43,13 @@ class Pawn < Piece
     end
 
     def side_attacks
-
+        x, y = pos
+        side_moves = [[x + forward_dir, y - 1], [x + forward_dir, y + 1]]
+        side_moves.select do |new_pos|
+            next false unless board.valid_pos?(new_pos)
+            next false if board[new_pos].empty?
+            board[new_pos].color != color
+        end
     end
 
 end
