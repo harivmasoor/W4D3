@@ -1,25 +1,25 @@
 class Piece
-    attr_accessor :pos,:color, :board
-    def initialize(color,pos,board)
-        @color = color
-        @pos = pos
-        @board = board
+    attr_reader :pos, :color, :board
+  
+    def initialize(pos, color, board)
+      @pos = pos
+      @color = color
+      @board = board
     end
-
-    def symbol 
-        'P'   
+  
+    def symbol
+      'P'
     end
-
-    def to_s 
-        # symbol
-        color.to_s 
+  
+    def to_s
+      symbol
     end
-
-    def empty?
-        false
-    end
-
+  
     def inspect
-        self.class
-      end
-end
+      self.class
+    end
+  
+    def empty?
+      false
+    end
+  end

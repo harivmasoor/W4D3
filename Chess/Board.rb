@@ -1,66 +1,58 @@
-# require_relative './Pieces/Pieces.rb'
+# generally use require for system files
 require_relative './Pieces/Piece.rb'
-require_relative './Pieces/nullpiece.rb'
+require_relative './Pieces/null_piece.rb'
 require_relative './Pieces/Bishop.rb'
 
 class Board
-    attr_reader :row,:null_piece
+  attr_reader :grid, :null_piece
 
-    def initialize
-    @row = Array.new(8) {Array.new(8)}
+  def initialize
     @null_piece = NullPiece.instance
-    setup
+    @grid = Array.new(8) { Array.new(8, null_piece) }
+    populate
+  end
+
+  def move_piece(start_pos, end_pos)
+    piece = self[start_pos]
+    self[end_pos] = piece
+    self[start_pos] = null_piece
+  end
+
+  def valid_pos?(pos)
+    pos.all? { |ele| ele >= 0 && ele <= 7 }
+  end
+
+  def [](pos)
+    r, c = pos
+    grid[r][c]
+  end
+
+  def []=(pos, val)
+    r, c = pos
+    grid[r][c] = val
+  end
+
+  def populate
+    [0,1].each do |i|
+      grid[i] = grid[i].map.with_index { |_, j| Bishop.new([i,j], :white, self) }
     end
 
-    def [](pos)
-        row,col = pos
-        row[row][col]
+    [6,7].each do |i|
+      grid[i] = grid[i].map.with_index { |_, j| Bishop.new([i,j], :black, self) }
     end
+  end
 
-    def []=(pos,val)
-        row,col = pos
-        row[row][col] = val
+  def to_s
+    grid.inject('') do |acc, row|
+      acc + "#{row.join(' ')}\n"
     end
-
-    def move_piece(color,start_pos, end_pos)
-        raise "There is no piece!!!!!"  if self[start_pos].nil?
-        raise "The piece cannot move there!!!!!"  unless self[end_pos].nil?
-
-        piece = self[start_pos]
-        self[end_pos] = piece
-        self[start_pos] = nil
-        piece.pos = end_pos
-    end
-
-    def setup ()
-        arr = []
-        (0..1).each do |i|
-            (0..7).each do |j|
-                # row[i][j] = Piece.new("white",[i,j],@row)
-                row[i][j] = Bishop.new("white",[i,j],self)
-            end
-        end
-
-        (6..7).each do |i|
-            (0..7).each do |j|
-                # row[i][j] = Piece.new("black",[i,j],@row)
-                row[i][j] = Bishop.new("black",[i,j],self)
-            end
-        end
-    end
-
-
-    def to_s
-        row.inject(''){|acc,row| 
-        acc + "#{row.join(' ')}\n"}
-    end
-
-    def valid_pos?(pos)
-        pos.all?{ |ele| ele >= 0 || ele <= 7 }
-    end
-
+  end
 end
 
 b = Board.new
 puts b
 p b[[1,6]].moves
+
+# p calls inspect and outputs to console with a new line
+# puts calls to_s and outputs to console with a new line
+# print calls to _s and outputs to console
