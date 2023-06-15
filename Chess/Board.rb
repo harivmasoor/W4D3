@@ -3,6 +3,7 @@ require_relative './Pieces/Piece.rb'
 require_relative './Pieces/null_piece.rb'
 require_relative './Pieces/Bishop.rb'
 require_relative './Pieces/Pawn.rb'
+require_relative 'display.rb'
 
 class Board
   attr_reader :grid, :null_piece
@@ -48,11 +49,22 @@ class Board
       acc + "#{row.join(' ')}\n"
     end
   end
+
+  def in_check?(color)
+
+  end
+  
 end
 
 b = Board.new
-puts b
-p b[[1,6]].moves
+# puts b
+# p b[[1,6]].moves
+
+d = Display.new(b)
+loop do 
+    d.cursor.get_input
+    p d.cursor.cursor_pos
+end
 
 # p calls inspect and outputs to console with a new line
 # puts calls to_s and outputs to console with a new line
